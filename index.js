@@ -41,9 +41,32 @@ async function handleEvent(event) {
 
   const text = event.message.text.trim();
 
-  if (text === '我要開版') {
-    return replyText(event.replyToken, '請留下你的暱稱，客服會協助你處理信用註冊。');
-  }
+if (text === '我要開版') {
+  return replyText(
+    event.replyToken,
+`信用審核資料如下👇
+
+1.身分證正反面（可浮水印）
+
+2.存簿封面（可浮水印）
+
+3.資料填寫
+
+姓名：
+電話：
+現居地址：
+戶籍地址：
+工作：
+每個月薪資：
+緊急聯絡人1：
+緊急聯絡人2：
+
+畢竟您要開版賺錢，我要會員人數，
+資料保密，沒必要造成公司困擾，謝謝。
+
+以上資料填寫後回傳，待客服驗證👍`
+  );
+}
 
   if (text === '活動登記') {
     return replyText(event.replyToken, '請留下你的暱稱與要參加的活動，客服會協助你登記。');
