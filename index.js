@@ -34,6 +34,20 @@ async function replyText(replyToken, text) {
   });
 }
 
+function createImageBubble(imageUrl) {
+  return {
+    type: 'bubble',
+    size: 'giga',
+    hero: {
+      type: 'image',
+      url: imageUrl,
+      size: 'full',
+      aspectRatio: '850:1200',
+      aspectMode: 'cover',
+    },
+  };
+}
+
 async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return null;
@@ -41,9 +55,9 @@ async function handleEvent(event) {
 
   const text = event.message.text.trim();
 
-if (text === '我要開版') {
-  return replyText(
-    event.replyToken,
+  if (text === '我要開版') {
+    return replyText(
+      event.replyToken,
 `信用審核資料如下👇
 
 1.身分證正反面（可浮水印）
@@ -65,11 +79,38 @@ if (text === '我要開版') {
 資料保密，沒必要造成公司困擾謝謝
 
 以上資料填寫後回傳，待客服驗證`
-  );
-}
+    );
+  }
 
   if (text === '活動登記') {
-    return replyText(event.replyToken, '請留下你的暱稱與要參加的活動，客服會協助你登記。');
+    return client.replyMessage({
+      replyToken: event.replyToken,
+      messages: [
+        {
+          type: 'flex',
+          altText: '活動登記',
+          contents: {
+            type: 'carousel',
+            contents: [
+              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity1.jpg'),
+              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity2.jpg'),
+              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity3.jpg'),
+              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity4.jpg'),
+              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity5.jpg'),
+              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity6.jpg')
+            ]
+          }
+        },
+        {
+          type: 'text',
+          text:
+`會員帳號：
+優惠選項：
+
+稍等客服幫你查詢是否符合領取資格`
+        }
+      ]
+    });
   }
 
   if (text === '問題回報') {
