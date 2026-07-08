@@ -37,12 +37,12 @@ async function replyText(replyToken, text) {
 function createImageBubble(imageUrl) {
   return {
     type: 'bubble',
-    size: 'giga',
+    size: 'mega',
     hero: {
       type: 'image',
       url: imageUrl,
       size: 'full',
-      aspectRatio: '850:1200',
+      aspectRatio: '2:3',
       aspectMode: 'cover',
     },
   };
@@ -87,27 +87,27 @@ async function handleEvent(event) {
       replyToken: event.replyToken,
       messages: [
         {
-          type: 'flex',
-          altText: '活動登記',
-          contents: {
-            type: 'carousel',
-            contents: [
-              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity1.jpg'),
-              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity2.jpg'),
-              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity3.jpg'),
-              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity4.jpg'),
-              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity5.jpg'),
-              createImageBubble('https://raw.githubusercontent.com/huang950906-cell/line-images1/main/activity6.jpg')
-            ]
-          }
-        },
-        {
           type: 'text',
           text:
 `會員帳號：
 優惠選項：
 
 稍等客服幫你查詢是否符合領取資格`
+        },
+        {
+          type: 'flex',
+          altText: '活動登記',
+          contents: {
+            type: 'carousel',
+            contents: [
+              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491150/activity1_fqe5v5.jpg'),
+              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity2_hblfck.jpg'),
+              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491150/activity3_ya6pfs.jpg'),
+              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity4_peredy.jpg'),
+              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity5_gmmgcx.jpg'),
+              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity6_bviiyu.jpg')
+            ]
+          }
         }
       ]
     });
