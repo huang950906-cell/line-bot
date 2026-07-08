@@ -87,14 +87,6 @@ async function handleEvent(event) {
       replyToken: event.replyToken,
       messages: [
         {
-          type: 'text',
-          text:
-`會員帳號：
-優惠選項：
-
-稍等客服幫你查詢是否符合領取資格`
-        },
-        {
           type: 'flex',
           altText: '活動登記',
           contents: {
@@ -108,6 +100,14 @@ async function handleEvent(event) {
               createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity6_bviiyu.jpg')
             ]
           }
+        },
+        {
+          type: 'text',
+          text:
+`會員帳號：
+優惠選項：
+
+稍等客服幫你查詢是否符合領取資格`
         }
       ]
     });
