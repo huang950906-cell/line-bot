@@ -19,18 +19,24 @@ app.get('/', (req, res) => {
 });
 
 app.post('/webhook', middleware(config), async (req, res) => {
-  Promise.all(req.body.events.map(handleEvent))
-    .then(() => res.status(200).end())
-    .catch((err) => {
-      console.error(err);
-      res.status(500).end();
-    });
+  try {
+    await Promise.all(req.body.events.map(handleEvent));
+    res.status(200).end();
+  } catch (err) {
+    console.error('Webhook 處理失敗：', err);
+    res.status(500).end();
+  }
 });
 
 async function replyText(replyToken, text) {
   return client.replyMessage({
     replyToken,
-    messages: [{ type: 'text', text }],
+    messages: [
+      {
+        type: 'text',
+        text,
+      },
+    ],
   });
 }
 
@@ -49,6 +55,7 @@ function createImageBubble(imageUrl) {
 }
 
 async function handleEvent(event) {
+  // 不是文字訊息就不回覆
   if (event.type !== 'message' || event.message.type !== 'text') {
     return null;
   }
@@ -58,7 +65,7 @@ async function handleEvent(event) {
   if (text === '我要開版') {
     return replyText(
       event.replyToken,
-`信用審核資料如下👇
+      `信用審核資料如下👇
 
 1.身分證正反面（可浮水印）
 
@@ -92,32 +99,47 @@ async function handleEvent(event) {
           contents: {
             type: 'carousel',
             contents: [
-              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491150/activity1_fqe5v5.jpg'),
-              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity2_hblfck.jpg'),
-              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491150/activity3_ya6pfs.jpg'),
-              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity4_peredy.jpg'),
-              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity5_gmmgcx.jpg'),
-              createImageBubble('https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity6_bviiyu.jpg')
-            ]
-          }
+              createImageBubble(
+                'https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491150/activity1_fqe5v5.jpg'
+              ),
+              createImageBubble(
+                'https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity2_hblfck.jpg'
+              ),
+              createImageBubble(
+                'https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491150/activity3_ya6pfs.jpg'
+              ),
+              createImageBubble(
+                'https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity4_peredy.jpg'
+              ),
+              createImageBubble(
+                'https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity5_gmmgcx.jpg'
+              ),
+              createImageBubble(
+                'https://res.cloudinary.com/bl7fhm9c/image/upload/f_auto,q_auto/v1783491151/activity6_bviiyu.jpg'
+              ),
+            ],
+          },
         },
         {
           type: 'text',
-          text:
-`會員帳號：
+          text: `會員帳號：
 優惠選項：
 
-稍等客服幫你查詢是否符合領取資格`
-        }
-      ]
+稍等客服幫你查詢是否符合領取資格`,
+        },
+      ],
     });
   }
 
   if (text === '問題回報') {
-    return replyText(event.replyToken, '請描述你遇到的問題，客服會盡快協助你處理。');
+    return replyText(
+      event.replyToken,
+      '請描述你遇到的問題，客服會盡快協助你處理。'
+    );
   }
 
-  return replyText(event.replyToken, '請點選下方圖文選單，或輸入：我要開版、活動登記、問題回報。');
+  // 不是指定關鍵字時，完全不回覆
+  return null;
 }
 
 const port = process.env.PORT || 3000;
