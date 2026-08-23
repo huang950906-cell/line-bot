@@ -54,6 +54,105 @@ function createImageBubble(imageUrl) {
   };
 }
 
+function createCashRegisterFlex() {
+  return {
+    type: 'flex',
+    altText: '現金註冊',
+    contents: {
+      type: 'bubble',
+      size: 'mega',
+      body: {
+        type: 'box',
+        layout: 'vertical',
+        paddingAll: '20px',
+        spacing: 'md',
+        contents: [
+          {
+            type: 'text',
+            text: '限時福利✨',
+            weight: 'bold',
+            size: 'xl',
+            color: '#222222',
+          },
+          {
+            type: 'separator',
+            margin: 'sm',
+          },
+          {
+            type: 'text',
+            text:
+              '儲值 2000 贈 1000（綁一倍）\n儲值 3000 贈 2000（綁一倍）\n儲值 5000 贈 3000（綁一倍）\n以上是信用平台儲值活動🎁',
+            size: 'md',
+            color: '#444444',
+            wrap: true,
+            margin: 'md',
+          },
+          {
+            type: 'text',
+            text: '⚠️ 推薦碼務必輸入（55014）',
+            size: 'md',
+            color: '#FF3B30',
+            weight: 'bold',
+            align: 'center',
+            margin: 'md',
+            wrap: true,
+          },
+          {
+            type: 'button',
+            style: 'primary',
+            color: '#18C964',
+            height: 'sm',
+            action: {
+              type: 'uri',
+              label: '信用平台立即註冊',
+              uri: 'http://gm.fl8899.com/hz',
+            },
+            margin: 'md',
+          },
+          {
+            type: 'separator',
+            margin: 'xl',
+          },
+          {
+            type: 'text',
+            text: '若你想使用三方儲值',
+            weight: 'bold',
+            size: 'md',
+            color: '#333333',
+            margin: 'lg',
+          },
+          {
+            type: 'text',
+            text: '以下是現金版註冊連結👇',
+            size: 'md',
+            color: '#666666',
+            wrap: true,
+          },
+          {
+            type: 'text',
+            text: '活動只有儲值 2000 贈 1000（綁一倍）',
+            size: 'md',
+            color: '#666666',
+            margin: 'md',
+            wrap: true,
+          },
+          {
+            type: 'button',
+            style: 'secondary',
+            height: 'sm',
+            action: {
+              type: 'uri',
+              label: '現金版立即註冊',
+              uri: 'http://trun888.ho666888.com/',
+            },
+            margin: 'md',
+          },
+        ],
+      },
+    },
+  };
+}
+
 async function handleEvent(event) {
   // 不是文字訊息就不回覆
   if (event.type !== 'message' || event.message.type !== 'text') {
@@ -62,6 +161,15 @@ async function handleEvent(event) {
 
   const text = event.message.text.trim();
 
+  // 現金註冊
+  if (text === '現金註冊') {
+    return client.replyMessage({
+      replyToken: event.replyToken,
+      messages: [createCashRegisterFlex()],
+    });
+  }
+
+  // 我要開版
   if (text === '我要開版') {
     return replyText(
       event.replyToken,
@@ -89,6 +197,7 @@ async function handleEvent(event) {
     );
   }
 
+  // 活動登記
   if (text === '活動登記') {
     return client.replyMessage({
       replyToken: event.replyToken,
@@ -131,6 +240,7 @@ async function handleEvent(event) {
     });
   }
 
+  // 問題回報
   if (text === '問題回報') {
     return replyText(
       event.replyToken,
@@ -138,7 +248,7 @@ async function handleEvent(event) {
     );
   }
 
-  // 不是指定關鍵字時，完全不回覆
+  // 不是指定關鍵字時完全不回覆
   return null;
 }
 
