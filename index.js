@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 
 const express = require('express');
@@ -84,7 +85,6 @@ function createCashRegisterFlex() {
         spacing: 'md',
 
         contents: [
-          // 標題
           {
             type: 'text',
             text: '限時福利✨',
@@ -100,7 +100,6 @@ function createCashRegisterFlex() {
             margin: 'sm',
           },
 
-          // 信用平台活動
           {
             type: 'text',
             text:
@@ -115,7 +114,6 @@ function createCashRegisterFlex() {
             margin: 'md',
           },
 
-          // 推薦碼
           {
             type: 'text',
             text: '⚠️ 推薦碼務必輸入（55014）',
@@ -127,7 +125,6 @@ function createCashRegisterFlex() {
             wrap: true,
           },
 
-          // 信用平台按鈕
           {
             type: 'button',
             style: 'primary',
@@ -146,7 +143,6 @@ function createCashRegisterFlex() {
             margin: 'xl',
           },
 
-          // 三方儲值
           {
             type: 'text',
             text: '若你想使用三方儲值',
@@ -177,7 +173,6 @@ function createCashRegisterFlex() {
             wrap: true,
           },
 
-          // 現金版按鈕
           {
             type: 'button',
             style: 'secondary',
@@ -196,12 +191,84 @@ function createCashRegisterFlex() {
 }
 
 // ================================
+// AI分析機器人 Flex 卡片
+// ================================
+function createAIBotFlex() {
+  return {
+    type: 'flex',
+    altText: 'AI分析機器人',
+    contents: {
+      type: 'bubble',
+      size: 'mega',
+
+      body: {
+        type: 'box',
+        layout: 'vertical',
+        paddingAll: '24px',
+        spacing: 'lg',
+
+        contents: [
+          // 標題
+          {
+            type: 'text',
+            text: '🤖 AI分析機器人',
+            weight: 'bold',
+            size: 'xxl',
+            color: '#1F2937',
+            align: 'center',
+            wrap: true,
+          },
+
+          // 分隔線
+          {
+            type: 'separator',
+            margin: 'md',
+            color: '#E5E7EB',
+          },
+
+          // 介紹內容
+          {
+            type: 'text',
+            text:
+              '透過上萬局牌局數據結果\n' +
+              '短時間優化下把牌局最合適的走向',
+            size: 'md',
+            color: '#4B5563',
+            align: 'center',
+            gravity: 'center',
+            wrap: true,
+            margin: 'lg',
+          },
+
+          // 立即領取 AI 機器人
+          {
+            type: 'button',
+            style: 'primary',
+            color: '#18C964',
+            height: 'md',
+            margin: 'xl',
+            action: {
+              type: 'uri',
+              label: '立即領取AI機器人',
+              uri: 'https://lin.ee/WadCzkv',
+            },
+          },
+        ],
+      },
+    },
+  };
+}
+
+// ================================
 // 處理 LINE 訊息
 // ================================
 async function handleEvent(event) {
 
   // 不是文字訊息就不處理
-  if (event.type !== 'message' || event.message.type !== 'text') {
+  if (
+    event.type !== 'message' ||
+    event.message.type !== 'text'
+  ) {
     return null;
   }
 
@@ -294,7 +361,6 @@ async function handleEvent(event) {
 
         {
           type: 'text',
-
           text: `會員帳號：
 優惠選項：
 
@@ -312,6 +378,18 @@ async function handleEvent(event) {
       event.replyToken,
       '請描述你遇到的問題，客服會盡快協助你處理。'
     );
+  }
+
+  // ================================
+  // AI機器人
+  // ================================
+  if (text === 'AI機器人') {
+    return client.replyMessage({
+      replyToken: event.replyToken,
+      messages: [
+        createAIBotFlex(),
+      ],
+    });
   }
 
   // ================================
